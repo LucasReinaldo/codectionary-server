@@ -2,18 +2,18 @@
   "name": "default",
   "type": "postgres",
   "host": "localhost",
-  "port": 5432,
+  "port": 5434,
   "username": "postgres",
-  "password": "YOUR_PASSWORD_HERE",
-  "database": "YOUR_DATABASE_NAME_HERE",
-  "synchronize": true,
+  "password": "admin",
+  "database": "codictionary",
+  "synchronize": false,
   "entities": [
     "./src/**/entities/*.ts"
   ],
   "migrations": [
-    "./src/infra/typeorm/migrations/*.ts"
+    "./src/shared/infra/typeorm/migrations/*.ts"
   ],
   "cli": {
-    "migrationsDir": "./src/infra/typeorm/migrations"
+    "migrationsDir": "./src/shared/infra/typeorm/migrations"
   }
 }
