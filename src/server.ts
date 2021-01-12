@@ -1,29 +1,48 @@
 /* eslint-disable no-console */
 import 'reflect-metadata';
-import express from 'express';
+import 'dotenv/config';
+
+import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 
-// import { createConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
+
+import AppError from '@shared/errors/AppError';
 
 const startServer = async () => {
-  const app = express();
+  await createConnection()
+    .then(async () => {
+      const app = express();
 
-  app.use(
-    cors({
-      origin: 'http://localhost:3000',
-      credentials: true,
-    }),
-  );
-  app.use(express.json());
+      app.use(cors());
+      app.use(express.json());
 
-  // createConnection method will automatically read connection options
-  // from your ormconfig file or environment variables
-  // await createConnection();
+      app.use(
+        (err: Error, request: Request, response: Response, _: NextFunction) => {
+          if (err instanceof AppError) {
+            const { statusCode, message } = err;
 
-  app.listen(5000, () => {
-    console.log('🚀 Running at localhost:5000');
-  });
+            return response.status(statusCode).json({
+              status: 'error',
+              message,
+            });
+          }
+
+          console.log(err);
+
+          return response.status(500).json({
+            status: 'error',
+            message: 'Internal server error',
+          });
+        },
+      );
+
+      app.listen(5000, () => {
+        console.log('🚀 Running at localhost:5000');
+      });
+    })
+    .catch((error) => console.log(error));
 };
 
 startServer().catch((err: Error) => {
