@@ -2,10 +2,8 @@ import { Request, Response } from 'express';
 import CreateUsersService from '../services/CreateUsersService';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 
-const usersRepository = new UsersRepository();
-
 export default class UsersController {
-  public async auth(request: Request, response: Response): Promise<Response> {
+  public async create(request: Request, response: Response): Promise<Response> {
     const { username, email, password } = request.body;
 
     const data = {
@@ -14,9 +12,9 @@ export default class UsersController {
       password,
     };
 
-    const createUser = new CreateUsersService(usersRepository);
+    const createUserService = new CreateUsersService(new UsersRepository());
 
-    const user = createUser.execute(data);
+    const user = await createUserService.execute(data);
 
     return response.status(200).json(user);
   }

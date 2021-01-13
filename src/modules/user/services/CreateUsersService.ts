@@ -15,9 +15,11 @@ export default class CreateUsersService {
     email,
     password,
   }: ICreateUserDTO): Promise<User> {
-    const checkUsernameExists = this.usersRepository.findByUsername(username);
+    const checkUsernameExists = await this.usersRepository.findByUsername(
+      username,
+    );
 
-    if (!checkUsernameExists) {
+    if (checkUsernameExists) {
       throw new AppError('User not found.');
     }
 

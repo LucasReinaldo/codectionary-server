@@ -1,6 +1,7 @@
+import { getRepository, Repository } from 'typeorm';
+
 import ICreateUserDTO from '@modules/user/dtos/ICreateUserDTO';
 import IUsersRepository from '@modules/user/protocols/IUsersRepository';
-import { getRepository, Repository } from 'typeorm';
 import User from '../entities/User';
 
 export default class UsersRepository implements IUsersRepository {
@@ -11,7 +12,9 @@ export default class UsersRepository implements IUsersRepository {
   }
 
   public async findByUsername(username: string): Promise<User | undefined> {
-    const user = await this.ormRepository.findOne(username);
+    const user = await this.ormRepository.findOne({
+      where: { username },
+    });
 
     return user;
   }
