@@ -5,10 +5,12 @@ import 'dotenv/config';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import morgan from 'morgan';
 
 import { createConnection } from 'typeorm';
 
 import AppError from '@shared/errors/AppError';
+import routes from './routes';
 
 const startServer = async () => {
   await createConnection()
@@ -17,6 +19,8 @@ const startServer = async () => {
 
       app.use(cors());
       app.use(express.json());
+      app.use(routes);
+      app.use(morgan('dev'));
 
       app.use(
         (err: Error, request: Request, response: Response, _: NextFunction) => {
