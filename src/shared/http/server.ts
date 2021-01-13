@@ -2,12 +2,12 @@
 import 'reflect-metadata';
 import 'dotenv/config';
 
+import { createConnection } from 'typeorm';
+
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import morgan from 'morgan';
-
-import { createConnection } from 'typeorm';
 
 import AppError from '@shared/errors/AppError';
 import routes from './routes';
