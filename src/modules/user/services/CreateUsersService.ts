@@ -20,7 +20,7 @@ export default class CreateUsersService {
     );
 
     if (checkUsernameExists) {
-      throw new AppError('User not found.');
+      throw new AppError('User already registered.');
     }
 
     const user = await this.usersRepository.create({
