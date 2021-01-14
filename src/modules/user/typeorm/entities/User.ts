@@ -6,6 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
+import { IsEmail } from 'class-validator';
+
 @Entity('users')
 export default class User {
   @PrimaryGeneratedColumn('uuid')
@@ -15,6 +17,7 @@ export default class User {
   username: string;
 
   @Column()
+  @IsEmail()
   email: string;
 
   @Column()
